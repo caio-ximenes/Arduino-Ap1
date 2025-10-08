@@ -35,6 +35,10 @@ int lerMovimento(){
   }
 }
 
+//Secção do infravermelho
+int lerInfra(){
+  return digitalRead(sensorInfra);
+}
 // Secção do KeyPad
 
   const byte LINHAS = 4;
@@ -59,6 +63,10 @@ int lerMovimento(){
   String entrada =  "";
 
 void setup() {
+//Buzzer
+  pinMode(saidaBuzzer,OUTPUT);
+//Sensor Infra
+  pinMode(sensorInfra,INPUT);
 
 // Joystick
   pinMode(A0,INPUT);
@@ -89,6 +97,19 @@ void loop() {
       Serial.print(tecla); 
     }
   }
+
+ if (lerInfra() == 0) {
+  for (int i = 0; i < 50; i++) {
+    digitalWrite(saidaBuzzer, LOW);   // liga o buzzer
+    delay(100);                       // tempo ligado (200 ms)
+    digitalWrite(saidaBuzzer, HIGH);  // desliga o buzzer
+    delay(100);                       // tempo desligado
+  }
+} 
+else {
+  digitalWrite(saidaBuzzer, LOW);     // mantém desligado quando não detecta
+}
+
   
 
 }
