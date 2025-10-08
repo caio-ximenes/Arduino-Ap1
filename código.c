@@ -35,6 +35,28 @@ int lerMovimento(){
   }
 }
 
+// Secção do KeyPad
+
+  const byte LINHAS = 4;
+  const byte COLUNAS = 4;
+
+  // Mapeamento das teclas 
+  char teclas[LINHAS][COLUNAS] = {
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}
+  };
+
+  
+  byte pinosLinhas[LINHAS] = {22, 24, 26, 28};
+  byte pinosColunas[COLUNAS] = {30, 32, 34, 36};
+
+  
+  Keypad teclado = Keypad(makeKeymap(teclas), pinosLinhas, pinosColunas, LINHAS, COLUNAS);
+
+
+  String entrada =  "";
 
 void setup() {
 
@@ -43,36 +65,30 @@ void setup() {
   pinMode(A1,INPUT);
 
 // Membrana
-  pinMode(22, OUTPUT);
-  pinMode(24, OUTPUT);
-  pinMode(26, OUTPUT);
-  pinMode(28, OUTPUT);
-
-  pinMode(30, INPUT);
-  pinMode(32, INPUT);
-  pinMode(34, INPUT);
-  pinMode(36, INPUT);
-
   Serial.begin(9600);
+  Serial.println("Digite algo e precione * para confirmar");
   
 
 }
 
 void loop() {
 
-  for (int ti = 22; ti<30; ti++){
-
-  }
-
-  digitalWrite(22, LOW);
-  digitalWrite(24, LOW);
-  digitalWrite(26,LOW);
-  digitalWrite(28, LOW);
-  digitalWrite(ti, HIGH);
-
-
+  char tecla = teclado.getKey(); 
   
- 
+
+  if (tecla) {
+    if (tecla == '*') {
+      Serial.println(); 
+      Serial.print("Entrada confirmada: ");
+      Serial.println(entrada);
+      entrada = "";
+      Serial.println("Digite novamente:");
+    } 
+    else if (tecla >= '0' && tecla <= '4') {
+      entrada += tecla;
+      Serial.print(tecla); 
+    }
+  }
   
 
 }
